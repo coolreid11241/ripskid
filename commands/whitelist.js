@@ -3,7 +3,6 @@ const rblx = require("roblox-js");
 const { prefix } = require("../config.json");
 const User = require("../models/User.js");
 
-
 module.exports.run = async (client, Discord, message, args) => {
   let token = uuid();
   if(message.channel.type !== "dm") return message.channel.send(":x: This command can only be executed in direct messages.");
@@ -11,16 +10,22 @@ module.exports.run = async (client, Discord, message, args) => {
   if(isNaN(args[0]) || isNaN(args[1])) return message.channel.send(":x: IDs must be numbers");
   client.fetchUser(args[0])
     .then(user => {
-      rblx.getUsernameFromId(args[1])
-        .then(username => {
-          console.log(username);
-          new User({
-            token,
-            robloxId: args[1],
-            discordId: args[0]
-          }).save().then(message.channel.send(`\`${user.tag}(${username})\` Whitelisted Successfully! token: \`${token}\``)).catch(console.error);
-        })
-        .catch(() => message.channel.send(`:x: No Roblox user found with id \`${args[1]}\``));      
+      User.findOne({ discordId: args[0] }, (err, res) => {
+        if(res) {
+          message.channel.send("User already whitelisted.");
+        } else {
+          rblx.getUsernameFromId(args[1])
+          .then(username => {
+            console.log(username);
+            new User({
+              token,
+              robloxId: args[1],
+              discordId: args[0]
+            }).save().then(message.channel.send(`\`${user.tag}(${username})\` Whitelisted Successfully! token: \`${token}\``)).catch(console.error);
+          })
+          .catch(() => message.channel.send(`:x: No Roblox user found with id \`${args[1]}\``));      
+        }
+      });
     })
     .catch(() => message.channel.send(`:x: No Discord user found with id \`${args[0]}\``));
 }

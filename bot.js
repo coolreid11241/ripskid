@@ -37,8 +37,10 @@ client.on("message", (message) => {
     message.channel.send(cooldownEmbed);
   } else {
     let cFile = client.commands.get(command.slice(prefix.length));
-    if(cFile.help.elevated === true && !config.owners.includes(message.author.id)) return;
-    if(cFile) cFile.run(client, Discord, message, args);
+    if(cFile) {
+      if(cFile.help.elevated === true && !config.owners.includes(message.author.id)) return;
+      cFile.run(client, Discord, message, args);
+    } 
 
     if(!config.owners.includes(message.author.id)) {
       client.cooldown.add(message.author.id);
