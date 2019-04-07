@@ -26,7 +26,6 @@ client.on("guildMemberAdd", (member) => {
 
 client.on("message", (message) => {
   if(message.author.bot) return;
-  if(message.guild.id !== config.guildId) return;
 
   let messageArray = message.content.split(" ");
   let command = messageArray[0];

@@ -1,6 +1,6 @@
 {
   "name": "ripskid-bot",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "ripskid lua obfuscator whitelist bot",
   "main": "bot.js",
   "scripts": {
@@ -14,6 +14,8 @@
     "dotenv": "^7.0.0",
     "mongoose": "^5.4.22",
     "node-os-utils": "^1.0.7",
+    "request": "^2.88.0",
+    "roblox-js": "^4.0.4",
     "uuid": "^3.3.2"
   }
 }
