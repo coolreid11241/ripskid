@@ -6,6 +6,7 @@ require("dotenv").config();
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
+client.cooldown = new Set();
 mongoose.connect(config.dbconn, { useNewUrlParser: true }, () => console.log("MongoDB Connection established to", config.dbconn));
 
 client.on("ready", () => {
@@ -31,9 +32,23 @@ client.on("message", (message) => {
   let command = messageArray[0];
   let args = messageArray.slice(1);
   let prefix = config.prefix;
+  let cooldownEmbed = new Discord.RichEmbed().setTitle("Cooldown").setColor("#00FF00").setDescription("You have to wait 3 seconds between command execution!").setTimestamp();
 
-  let cFile = client.commands.get(command.slice(prefix.length));
-  if(cFile) cFile.run(Client, bot, message, args);
+  if(client.cooldown.has(message.author.id)) {
+    message.channel.send(cooldownEmbed);
+  } else {
+    let cFile = client.commands.get(command.slice(prefix.length));
+    if(cFile.help.elevated === true && !config.owners.includes(message.author.id)) return;
+    if(cFile) cFile.run(client, Discord, message, args);
+
+    if(!config.owners.includes(message.author.id)) {
+      client.cooldown.add(message.author.id);
+    }
+
+    setTimeout(() => {
+      client.cooldown.delete(message.author.id);
+    }, config.cdseconds * 1000);
+  }
 });
 
 fs.readdir("./commands/", (err, files) => {

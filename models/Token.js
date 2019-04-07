@@ -5,7 +5,11 @@ const TokenSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  userId: {
+  robloxId: {
+    type: String,
+    required: true
+  },
+  discordId: {
     type: String,
     required: true
   },
