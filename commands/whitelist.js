@@ -11,20 +11,23 @@ module.exports.run = async (client, Discord, message, args) => {
   client.fetchUser(args[0])
     .then(user => {
       User.findOne({ discordId: args[0] }, (err, res) => {
-        if(res) {
+        if(res && !res.blacklisted) {
           message.channel.send("User already whitelisted.");
         } else {
-          rblx.getUsernameFromId(args[1])
-          .then(username => {
-            console.log(username);
-            new User({
-              token,
-              robloxId: args[1],
-              discordId: args[0]
-            }).save().then(message.channel.send(`\`${user.tag}(${username})\` Whitelisted Successfully! token: \`${token}\``)).catch(console.error);
-          })
-          .catch(() => message.channel.send(`:x: No Roblox user found with id \`${args[1]}\``));      
-        }
+          if(res.blacklisted) {
+            message.channel.send(":x: Warning: this user has been blacklisted. In order to whitelist this user, you will need to rewhitelist them by running the rewhitelist command.");
+          } else {
+            rblx.getUsernameFromId(args[1])
+            .then(username => {
+              new User({
+                token,
+                robloxId: args[1],
+                discordId: args[0]
+              }).save().then(message.channel.send(`\`${user.tag}(${username})\` Whitelisted Successfully! token: \`${token}\``)).catch(console.error);
+            })
+            .catch(() => message.channel.send(`:x: No Roblox user found with id \`${args[1]}\``));      
+          }
+        } 
       });
     })
     .catch(() => message.channel.send(`:x: No Discord user found with id \`${args[0]}\``));

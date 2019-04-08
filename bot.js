@@ -21,7 +21,8 @@ client.on("ready", () => {
 });
 
 client.on("guildMemberAdd", (member) => {
-  if(member.guild.id !== config.guildId) return;
+  let retard = client.guilds.get(config.mainGuild).roles.find(role => role.name === config.joinRole);
+  member.addRole(retard);
 });
 
 client.on("message", (message) => {
@@ -40,11 +41,10 @@ client.on("message", (message) => {
     if(cFile) {
       if(cFile.help.elevated === true && !config.owners.includes(message.author.id)) return;
       cFile.run(client, Discord, message, args);
+      if(!config.owners.includes(message.author.id)) {
+        client.cooldown.add(message.author.id);
+      }
     } 
-
-    if(!config.owners.includes(message.author.id)) {
-      client.cooldown.add(message.author.id);
-    }
 
     setTimeout(() => {
       client.cooldown.delete(message.author.id);

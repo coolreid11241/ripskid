@@ -1,7 +1,8 @@
 {
   "dbconn": "mongodb://localhost/ripskid",
-  "ownerId": "461286234245824519",
-  "owners": ["214904107465572354", "564332600844615681"],
+  "joinRole": "Retard",
+  "mainGuild": "564332600844615681",
+  "owners": ["214904107465572354", "461286234245824519"],
   "roleId": "????",
   "prefix": "?",
   "cdseconds": "3"
