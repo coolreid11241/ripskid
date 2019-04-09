@@ -18,14 +18,39 @@ client.on("ready", () => {
     console.log("Bot is secure");
   }
   client.user.setActivity("People sharing keys", { type: "WATCHING" });
+  client.logChannel = client.channels.find(channel => channel.name === config.logChannel);
 });
 
-client.on("guildMemberAdd", (member) => {
+client.on("messageDeleteBulk", messages => {
+  let mappedMessages = "";
+  messages.forEach(message => {
+    mappedMessages += `${message.content} - ${message.author.tag} (${message.author.id}) \n`;
+  });
+  let logEmbed = new Discord.RichEmbed()
+    .setTitle("Bulk Deleted")
+    .setColor("RANDOM")
+    .setDescription(mappedMessages)
+    .setTimestamp();
+  client.logChannel.send(logEmbed);
+});
+
+client.on("messageDelete", message => {
+  if(message.author.id === client.user.id) return;
+  let logEmbed = new Discord.RichEmbed()
+    .setTitle("Message Deleted")
+    .setColor("RANDOM")
+    .setDescription(`By ${message.author.tag}`)
+    .addField("Content", message.content)
+    .setTimestamp();
+  client.logChannel.send(logEmbed);
+});
+
+client.on("guildMemberAdd", member => {
   let retard = client.guilds.get(config.mainGuild).roles.find(role => role.name === config.joinRole);
   member.addRole(retard);
 });
 
-client.on("message", (message) => {
+client.on("message", async message => {
   if(message.author.bot) return;
 
   let messageArray = message.content.split(" ");

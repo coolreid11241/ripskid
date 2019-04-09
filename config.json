@@ -1,6 +1,7 @@
 {
   "dbconn": "mongodb://localhost/ripskid",
   "joinRole": "Retard",
+  "logChannel": "message-logs",
   "mainGuild": "564332600844615681",
   "owners": ["214904107465572354", "461286234245824519"],
   "roleId": "????",

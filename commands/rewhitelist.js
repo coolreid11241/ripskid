@@ -13,7 +13,7 @@ module.exports.run = async (client, Discord, message, args) => {
       } else if(!user.blacklisted) {
         message.channel.send(":x: User is already whitelisted");
       } else {
-        message.channel.send("Rewhitelisted user");
+        message.channel.send(`Rewhitelisted \`${args[0]}\` token: \`${token}\``);
       }
     });
   } else if (args[0].length < 18){
@@ -23,7 +23,7 @@ module.exports.run = async (client, Discord, message, args) => {
       } else if (!user.blacklisted) {
         message.channel.send(":x: User is already whitelisted");
       } else {
-        message.channel.send("Rewhitelisted user");
+        message.channel.send(`Rewhitelisted \`${args[0]}\` token: \`${token}\``);
       }
     });
   } else {

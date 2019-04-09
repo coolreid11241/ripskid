@@ -13,11 +13,10 @@ module.exports.run = async (client, Discord, message, args) => {
       User.findOne({ discordId: args[0] }, (err, res) => {
         if(res && !res.blacklisted) {
           message.channel.send("User already whitelisted.");
-        } else {
-          if(res.blacklisted) {
-            message.channel.send(":x: Warning: this user has been blacklisted. In order to whitelist this user, you will need to rewhitelist them by running the rewhitelist command.");
-          } else {
-            rblx.getUsernameFromId(args[1])
+        } else if(res && res.blacklisted) {
+          message.channel.send(":x: Warning: this user has been blacklisted. In order to whitelist this user, you will need to rewhitelist them by running the rewhitelist command.");  
+        } else if (!res) {
+          rblx.getUsernameFromId(args[1])
             .then(username => {
               new User({
                 token,
@@ -26,7 +25,6 @@ module.exports.run = async (client, Discord, message, args) => {
               }).save().then(message.channel.send(`\`${user.tag}(${username})\` Whitelisted Successfully! token: \`${token}\``)).catch(console.error);
             })
             .catch(() => message.channel.send(`:x: No Roblox user found with id \`${args[1]}\``));      
-          }
         } 
       });
     })
