@@ -21,26 +21,13 @@ client.on("ready", () => {
   client.logChannel = client.channels.find(channel => channel.name === config.logChannel);
 });
 
-client.on("messageDeleteBulk", messages => {
-  let mappedMessages = "";
-  messages.forEach(message => {
-    mappedMessages += `${message.content} - ${message.author.tag} (${message.author.id}) \n`;
-  });
-  let logEmbed = new Discord.RichEmbed()
-    .setTitle("Bulk Deleted")
-    .setColor("RANDOM")
-    .setDescription(mappedMessages)
-    .setTimestamp();
-  client.logChannel.send(logEmbed);
-});
-
 client.on("messageDelete", message => {
   if(message.author.id === client.user.id) return;
   let logEmbed = new Discord.RichEmbed()
     .setTitle("Message Deleted")
     .setColor("RANDOM")
     .setDescription(`By ${message.author.tag}`)
-    .addField("Content", message.content)
+    .addField("Content", (message.embeds.length > 0) ? "unable to display(embed)" : message.content)
     .setTimestamp();
   client.logChannel.send(logEmbed);
 });
