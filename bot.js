@@ -72,6 +72,11 @@ fs.readdir("./commands/", (err, files) => {
   jsFiles.forEach(file => {
     let module = require(`./commands/${file}`);
     client.commands.set(module.help.name, module);
+    if(module.help.aliases) {
+      module.help.aliases.forEach(alias => {
+        client.commands.set(alias, module);
+      });
+    }
     console.log("Loaded", file);
   });
 });

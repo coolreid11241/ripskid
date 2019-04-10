@@ -14,5 +14,6 @@ module.exports.run = async (client, Discord, message, args) => {
 
 module.exports.help = {
   name: "purge",
-  elevated: true
+  elevated: true,
+  usage: `${prefix}purge || ${prefix}purge <amount>`
 }
