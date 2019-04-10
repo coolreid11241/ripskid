@@ -4,6 +4,7 @@ module.exports.run = async (client, Discord, message, args) => {
   if(message.channel.type !== "dm") {
     message.delete();
     message.channel.send(":x: This command can only be executed in DMs");
+  } else {
     if(!args[0]) return message.channel.send(":x: You must provide your token to change your discord account");
     User.findOneAndUpdate({ token: args[0] }, { $set: { discordId: message.author.id } }, (err, user) => {
       if(!user) {
@@ -13,7 +14,7 @@ module.exports.run = async (client, Discord, message, args) => {
         message.channel.send(`Successfully changed the account linked to your whitelist to ${message.author.tag}`)
       }
     });
-  }     
+  }    
 }
 
 module.exports.help = {
