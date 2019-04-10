@@ -1,5 +1,5 @@
 {
-  "dbconn": "mongodb://localhost/ripskid",
+  "dbconn": "mongodb://192.168.0.23:27017/ripskid",
   "joinRole": "Retard",
   "logChannel": "message-logs",
   "mainGuild": "564332600844615681",
