@@ -17,6 +17,16 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  idChanges: [
+    {
+      discord: {
+        type: Number
+      },
+      roblox: {
+        type: Number
+      }
+    }
+  ],
   date: {
     type: Date,
     default: Date.now()
