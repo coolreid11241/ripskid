@@ -9,13 +9,14 @@ module.exports.run = async (client, Discord, message, args) => {
       if(!user) {
         message.channel.send(":x: Token not found in database. If you forgot your token and do not have access to the account previously linked to your account, please contact an owner");
       } else {
-          
+        if(user.discordId === message.author.id) return message.channel.send("This discord account is the currently linked account in your whitelist already.");
+        message.channel.send(`Successfully changed the account linked to your whitelist to ${message.author.tag}`)
       }
     });
   }     
 }
 
 module.exports.help = {
-  name: "resetrblx",
+  name: "resetdiscord",
   elevated: false,
 }
