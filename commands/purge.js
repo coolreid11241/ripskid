@@ -1,3 +1,5 @@
+const { prefix } = require("../config.json");
+
 module.exports.run = async (client, Discord, message, args) => {
   if(!args[0]) {
     await message.delete();
